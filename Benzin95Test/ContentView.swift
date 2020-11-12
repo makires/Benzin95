@@ -46,28 +46,46 @@ struct ContentView: View {
         NavigationView {
             
         List {
-            Section(header: Text("Сколько проехали ?")) {
-                
-                TextField("🐌 км", text: $inputDistance)
-                    .onTapGesture {
+            Section(header: Text("Всего \(totalPrice, specifier: "%.2f") ₽")) {
+                HStack(spacing: 9) {
+                    VStack {
+                        Text("Сколько проехали ?")
+                    }
+                    VStack {
+                        TextField("🐌 км", text: $inputDistance)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 120, height: 20)
+                            .onTapGesture {
                                 hideKeyboard()
                             }
-                    .keyboardType(.decimalPad)
+                            .keyboardType(.decimalPad)
+                    }
                     
+                }
             }
-            Section(header: Text("Цена бензина") ) {
-                TextField("💰₽", text: $pricePerLiter)
-                    .keyboardType(.decimalPad)
-                    .onTapGesture {
-                                hideKeyboard()
-                            }
+            
+            HStack(spacing: 40) {
+                    VStack {
+                        Text("Цена бензина ₽")
+                    }
+                    VStack {
+                        TextField("💰₽", text: $pricePerLiter)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 120, height: 20)
+                            .keyboardType(.decimalPad)
+                            .onTapGesture {
+                                        hideKeyboard()
+                        }
+                    }
+                }
+               
 //                Text("ADD парсинг цен на бенз")
-            }
+            
 //            Section {
 //                Text("Куда ездили?")
 //                TextField("пункт назначения", text: $inputWhereYouDrive)
 //            }
-            Section(header: Text("⛽️ Расход (л / 100 км)")) {
+            Section(header: Text("⛽️ Расход ( \(chooseConsumptionForSubaru[inputConsumptionForPicker]) л / 100 км)")) {
                 Picker("Расход топлива", selection: $inputConsumptionForPicker) {
                     ForEach(0..<chooseConsumptionForSubaru.count) {
                         Text("\(chooseConsumptionForSubaru[$0])")
@@ -93,7 +111,7 @@ struct ContentView: View {
             }
             
             Text("С каждого \(totalPriceByOne, specifier: "%.2f") ₽")
-        }.navigationBarTitle("Траты → \(totalPrice, specifier: "%.2f")")
+        }.navigationBarTitle("Benzin95")
         .listStyle(GroupedListStyle())
         }
     }
