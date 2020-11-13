@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State var inputDistance = ""
     @State var inputWhereYouDrive = ""
@@ -20,20 +21,36 @@ struct ContentView: View {
     let chooseNumberPeopleForSubaru = [1,2,3,4,5]
     
     var totalPrice: Double {
-        let convertInputDistance = Double(inputDistance) ?? 0
+        let numberFormatter = NumberFormatter()
+        numberFormatter.decimalSeparator = ","
+        
+        let formatterInputDistance = numberFormatter.number(from: inputDistance)
+        
+        let convertInputDistance = Double(formatterInputDistance ?? 0)
         let countPeople = Double(inputNumberPeopleForPicker + 1)
         let convertSelectionConsumption = Double(chooseConsumptionForSubaru[inputConsumptionForPicker])
-        let convertPricePerLiter = Double(pricePerLiter) ?? 0
+        
+        
+        let formatterPricePerLiterWithDot = numberFormatter.number(from: pricePerLiter)
+        let convertPricePerLiter = Double(formatterPricePerLiterWithDot ?? 0)
         
         let totalMoney = ( (convertInputDistance*convertSelectionConsumption) / 100 ) * convertPricePerLiter
         return totalMoney
     }
     
     var totalPriceByOne: Double {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.decimalSeparator = ","
+        
+        let formatterInputDistance = numberFormatter.number(from: inputDistance)
+
         let convertInputDistance = Double(inputDistance) ?? 0
         let countPeople = Double(inputNumberPeopleForPicker + 1)
         let convertSelectionConsumption = Double(chooseConsumptionForSubaru[inputConsumptionForPicker])
-        let convertPricePerLiter = Double(pricePerLiter) ?? 0
+        
+        
+        let formatterPricePerLiterWithDot = numberFormatter.number(from: pricePerLiter)
+        let convertPricePerLiter = Double(formatterPricePerLiterWithDot ?? 0)
         
         let totalMoney = ( (convertInputDistance*convertSelectionConsumption) / 100 ) * convertPricePerLiter
         
