@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UIGestureRecognizerDelegate {
 
     var window: UIWindow?
 
@@ -28,6 +28,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+        
+        // костыли для исчезновения клавиатуры, чтобы другие контроллеры не ломались
+        
+        let tapGesture = AnyGestureRecognizer(target: window, action:#selector(UIView.endEditing))
+        tapGesture.requiresExclusiveTouchType = false
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self //I don't use window as delegate to minimize possible side effects
+        window?.addGestureRecognizer(tapGesture)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -58,6 +66,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    // костыли для исчезновения клавиатуры, чтобы другие контроллеры не ломались
+    
+    class AnyGestureRecognizer: UIGestureRecognizer {
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+            if let touchedView = touches.first?.view, touchedView is UIControl {
+                state = .cancelled
+
+            } else if let touchedView = touches.first?.view as? UITextView, touchedView.isEditable {
+                state = .cancelled
+
+            } else {
+                state = .began
+            }
+        }
+
+        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+           state = .ended
+        }
+
+        override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+            state = .cancelled
+        }
+    }
 
 }
 

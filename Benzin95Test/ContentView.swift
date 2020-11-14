@@ -35,6 +35,7 @@ struct ContentView: View {
         let convertPricePerLiter = Double(formatterPricePerLiterWithDot ?? 0)
         
         let totalMoney = ( (convertInputDistance*convertSelectionConsumption) / 100 ) * convertPricePerLiter
+        
         return totalMoney
     }
     
@@ -62,74 +63,73 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             
-        List {
-            Section(header: Text("Всего \(totalPrice, specifier: "%.2f") ₽")) {
-                HStack(spacing: 9) {
-                    VStack {
-                        Text("Сколько проехали ?")
+            VStack {
+                List {
+                Section(header: Text("Всего \(totalPrice, specifier: "%.2f") ₽")) {
+                    HStack(spacing: 9) {
+                        VStack {
+                            Text("Сколько проехали ?")
+                        }
+                        VStack {
+                            TextField("🐌 км", text: $inputDistance)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120, height: 20)
+                                
+                                .keyboardType(.decimalPad)
+                        }
+                        
                     }
-                    VStack {
-                        TextField("🐌 км", text: $inputDistance)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120, height: 20)
-                            .onTapGesture {
-                                hideKeyboard()
-                            }
-                            .keyboardType(.decimalPad)
-                    }
-                    
                 }
-            }
-            
-            HStack(spacing: 40) {
-                    VStack {
-                        Text("Цена бензина ₽")
-                    }
-                    VStack {
-                        TextField("💰₽", text: $pricePerLiter)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120, height: 20)
-                            .keyboardType(.decimalPad)
-                            .onTapGesture {
-                                        hideKeyboard()
+                
+                HStack(spacing: 40) {
+                        VStack {
+                            Text("Цена бензина ₽")
+                        }
+                        VStack {
+                            TextField("💰₽", text: $pricePerLiter)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120, height: 20)
+                                .keyboardType(.decimalPad)
+                                
                         }
                     }
-                }
-               
-//                Text("ADD парсинг цен на бенз")
-            
-//            Section {
-//                Text("Куда ездили?")
-//                TextField("пункт назначения", text: $inputWhereYouDrive)
-//            }
-            Section(header: Text("⛽️ Расход ( \(chooseConsumptionForSubaru[inputConsumptionForPicker]) л / 100 км)")) {
-                Picker("Расход топлива", selection: $inputConsumptionForPicker) {
-                    ForEach(0..<chooseConsumptionForSubaru.count) {
-                        Text("\(chooseConsumptionForSubaru[$0])")
-                    }
-                }.pickerStyle(SegmentedPickerStyle())
-//                Text("Ввести вручную")
-//                TextField("количество бензина", text: $inputConsumption)
-//                    .keyboardType(.decimalPad)
+                   
+    //                Text("ADD парсинг цен на бенз")
                 
-            
-            }
-            Section(header: Text("Сколько человек?")) {
+    //            Section {
+    //                Text("Куда ездили?")
+    //                TextField("пункт назначения", text: $inputWhereYouDrive)
+    //            }
+                Section(header: Text("⛽️ Расход ( \(chooseConsumptionForSubaru[inputConsumptionForPicker]) л / 100 км)")) {
+                    Picker("Расход топлива", selection: $inputConsumptionForPicker) {
+                        ForEach(0..<chooseConsumptionForSubaru.count) {
+                            Text("\(chooseConsumptionForSubaru[$0])")
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
+    //                Text("Ввести вручную")
+    //                TextField("количество бензина", text: $inputConsumption)
+    //                    .keyboardType(.decimalPad)
+                    
+                
+                }
+                Section(header: Text("Сколько человек?")) {
 
-                Picker("Количество человек", selection: $inputNumberPeopleForPicker) {
-                    ForEach(0..<chooseNumberPeopleForSubaru.count) {
-                        Text("\(chooseNumberPeopleForSubaru[$0])")
-                    }
-                }.pickerStyle(SegmentedPickerStyle())
-//                Text("Ввести вручную")
-//
-//                TextField("посчитать людей", text: $inputNumberPeople)
-//                    .keyboardType(.numberPad)
-            }
-            
-            Text("С каждого \(totalPriceByOne, specifier: "%.2f") ₽")
-        }.navigationBarTitle("Benzin95")
-        .listStyle(GroupedListStyle())
+                    Picker("Количество человек", selection: $inputNumberPeopleForPicker) {
+                        ForEach(0..<chooseNumberPeopleForSubaru.count) {
+                            Text("\(chooseNumberPeopleForSubaru[$0])")
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
+    //                Text("Ввести вручную")
+    //
+    //                TextField("посчитать людей", text: $inputNumberPeople)
+    //                    .keyboardType(.numberPad)
+                }
+                
+                Text("С каждого \(totalPriceByOne, specifier: "%.2f") ₽")
+            }.navigationBarTitle("Benzin95")
+                .listStyle(GroupedListStyle())
+            } 
+      
         }
     }
 }
